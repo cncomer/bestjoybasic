@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 打电话 发短信 -->
+    <string-array name="phoneClickableSpan">
+        <item>@string/call_text</item>
+        <item>@string/sms_text</item>
+    </string-array>
+
+</resources>

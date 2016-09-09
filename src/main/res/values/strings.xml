@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">基础库</string>
+
+    <string name="sms_text">发短信</string>
+    <string name="call_text">打电话</string>
+
+    <string name="basic_msg_gernal_network_error">"请检查您的网络是否通畅"</string>
+    <string name="basic_format_network_exception">"请检查您的网络是否通畅[%s]"</string>
+    <string name="basic_msg_network_error_client_protocol_exception">"请检查您的网络是否通畅"</string>
+    <string name="basic_msg_network_error_statue">"抱歉，出错了，错误代码[%s]"</string>
+</resources>
