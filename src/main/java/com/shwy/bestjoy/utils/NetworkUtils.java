@@ -40,7 +40,7 @@ public class NetworkUtils {
 		int index = uri.indexOf("?");
 		if (index > 0 && index < uri.length()) {
 			if (DebugMode) {
-				DebugUtils.logD(TAG, "HttpGet param=" + uri.substring(index+1));
+				DebugUtils.logD(TAG, "HttpGet uri=" + uri);
 			}
 		}
 		 
@@ -240,6 +240,9 @@ public class NetworkUtils {
 	 * @throws Exception
      */
 	public static ServiceResultObject getServiceResultObjectFromUrl(String url, SecurityUtils.SecurityKeyValuesObject securityKeyValues) throws Exception {
+		if (DebugMode) {
+			DebugUtils.logD(TAG, "getServiceResultObjectFromUrl url=" + url);
+		}
 		InputStream is = null;
 		ServiceResultObject serviceResultObject = new ServiceResultObject();
 		try {
@@ -262,6 +265,9 @@ public class NetworkUtils {
 	 * @throws Exception
 	 */
 	public static ServiceResultObject postServiceResultObjectFromUrl(String url, HashMap<String, String> param, SecurityUtils.SecurityKeyValuesObject securityKeyValues) throws Exception {
+		if (DebugMode) {
+			DebugUtils.logD(TAG, "postServiceResultObjectFromUrl url=" + url);
+		}
 		InputStream is = null;
 		ServiceResultObject serviceResultObject = new ServiceResultObject();
 		try {
@@ -283,6 +289,9 @@ public class NetworkUtils {
 	 * @throws Exception
 	 */
 	public static ServiceResultObject getArrayServiceResultObjectFromUrl(String url, SecurityUtils.SecurityKeyValuesObject securityKeyValues) throws Exception {
+		if (DebugMode) {
+			DebugUtils.logD(TAG, "getArrayServiceResultObjectFromUrl url=" + url);
+		}
 		InputStream is = null;
 		ServiceResultObject serviceResultObject = new ServiceResultObject();
 		try {
