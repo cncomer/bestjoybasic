@@ -3,6 +3,7 @@ package com.shwy.bestjoy.utils;
 import android.util.Log;
 
 public class DebugUtils {
+	private static final String DebugUtilsTAG = "DebugUtils";
 
 	public static final boolean DEBUG_LIFE = false;
 	public static final boolean DEBUG_DECODE_THREAD = false;
@@ -35,13 +36,13 @@ public class DebugUtils {
 	
 	public static final void logNetworkOp(String TAG, String MSG) {
 		if (false) {
-			Log.d(TAG, MSG==null?"":MSG);
+			Log.d(DebugUtilsTAG+TAG, MSG==null?"":MSG);
 		}
 	}
 	
 	public static final void logLife(String TAG, String MSG) {
 		if (DEBUG_LIFE) {
-			Log.w(TAG, MSG==null?"":MSG);
+			Log.w(DebugUtilsTAG+TAG, MSG==null?"":MSG);
 		}
 	}
 	
@@ -60,38 +61,38 @@ public class DebugUtils {
 	
 	public static final void logExchangeBCParse(String TAG, String MSG) {
 		if (true) {
-			Log.w(TAG, MSG==null?"":MSG);
+			Log.w(DebugUtilsTAG+TAG, MSG==null?"":MSG);
 		}
 	}
 	
 	public static final void logExchangeBC(String TAG, String MSG) {
 		if (false) {
-			Log.w(TAG, MSG==null?"":MSG);
+			Log.w(DebugUtilsTAG+TAG, MSG==null?"":MSG);
 		}
 	}
 	
 	public static final void logSms(String TAG, String MSG) {
 		if (DEBUG_SMS) {
-			Log.w(TAG, MSG==null?"":MSG);
+			Log.w(DebugUtilsTAG+TAG, MSG==null?"":MSG);
 		}
 	}
 	
 	public static final void logDeleteFiles(String TAG, String MSG) {
 		if (DEBUG_DELETE_FILES) {
-			Log.d(TAG, MSG==null?"":MSG);
+			Log.d(DebugUtilsTAG+TAG, MSG==null?"":MSG);
 		}
 	}
 	
 	public static final void logPhotoUtils(String tag, String msg) {
-		if (DEBUG_PHOTOMANAGER) Log.w(tag, msg==null?"":msg);
+		if (DEBUG_PHOTOMANAGER) Log.w(DebugUtilsTAG+tag, msg==null?"":msg);
 	}
 	
 	public static final void logProvider(String tag, String msg) {
-		if (DEBUG_PROVIDER) Log.w(tag, msg==null?"":msg);
+		if (DEBUG_PROVIDER) Log.w(DebugUtilsTAG+tag, msg==null?"":msg);
 	}
 	
 	public static final void logContactAsyncDownload(String tag, String msg) {
-		if (DEBUG_CONTACT_DOWNLOAD) Log.w(tag, msg==null?"":msg);
+		if (DEBUG_CONTACT_DOWNLOAD) Log.w(DebugUtilsTAG+tag, msg==null?"":msg);
 	}
 
 	public static void main(String[] args) {
@@ -101,7 +102,7 @@ public class DebugUtils {
 
 	public static final void logContentFromInput(String TAG, String MSG) {
 		if (DEBUG_ContentFromInput) {
-			Log.d(TAG, MSG==null?"":MSG);
+			Log.d(DebugUtilsTAG+TAG, MSG==null?"":MSG);
 		}
 	}
 }
