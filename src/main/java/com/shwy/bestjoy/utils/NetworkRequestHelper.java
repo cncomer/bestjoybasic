@@ -39,12 +39,14 @@ public class NetworkRequestHelper {
         protected void onPostExecute(Object result) {
             super.onPostExecute(result);
             _requestRespond.onRequestEnd(result);
+            _requestRespond = null;
         }
 
         @Override
         protected void onCancelled() {
             super.onCancelled();
             _requestRespond.onRequestCancelled();
+            _requestRespond = null;
         }
 
     }
