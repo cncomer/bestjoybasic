@@ -281,6 +281,31 @@ public class NetworkUtils {
 		}
 		return serviceResultObject;
 	}
+
+	/**
+	 * 解析对象
+	 * @param url
+	 * @param securityKeyValues
+	 * @return
+	 * @throws Exception
+	 */
+	public static ServiceResultObject postArrayServiceResultObjectFromUrl(String url, HashMap<String, String> param, SecurityUtils.SecurityKeyValuesObject securityKeyValues) throws Exception {
+		if (DebugMode) {
+			DebugUtils.logD(TAG, "postServiceResultObjectFromUrl url=" + url);
+		}
+		InputStream is = null;
+		ServiceResultObject serviceResultObject = new ServiceResultObject();
+		try {
+			is = NetworkUtils.openPostContectionLocked(url, param, securityKeyValues);
+			serviceResultObject = ServiceResultObject.parseArray(NetworkUtils.getContentFromInput(is));
+		} catch (IOException e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+			NetworkUtils.closeInputStream(is);
+		}
+		return serviceResultObject;
+	}
 	/**
 	 * 解析数组对象
 	 * @param url

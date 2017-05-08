@@ -378,4 +378,18 @@ public class GzipNetworkUtils {
 		}
 	}
 
+	public static ServiceResultObject postArrayServiceResultObjectFromUrl(String url, HashMap<String, String> param, SecurityUtils.SecurityKeyValuesObject securityKeyValues) throws Exception {
+		if (DebugMode) {
+			DebugUtils.logD(TAG, "getArrayServiceResultObjectFromUrl url=" + url);
+		}
+		try {
+			HttpResponse httpResponse = GzipNetworkUtils.openPostContectionLocked(url, param, securityKeyValues);
+			ServiceResultObject serviceResultObject = ServiceResultObject.parseArray(GzipNetworkUtils.getContentFromHttpResponse(httpResponse));
+			return serviceResultObject;
+		} catch (IOException e) {
+			e.printStackTrace();
+			throw e;
+		}
+	}
+
 }
