@@ -227,9 +227,6 @@ public class GzipNetworkUtils {
 		try {
 			is = getInputStreamFromHttpResponse(httpResponse);
 			String result = getContentFromInput(is);
-			if (DebugMode) {
-				DebugUtils.logD(TAG, "return getContentFromHttpResponse " + result);
-			}
 			return result;
 		} finally {
 			GzipNetworkUtils.closeInputStream(is);
