@@ -165,7 +165,7 @@ public class GzipNetworkUtils {
 		String contents = paramName + "=" + paramValue;
 
 		if (DebugMode) {
-			DebugUtils.logD(TAG, "HttpPost " + uri +  ",contents=" + contents.toString());
+			DebugUtils.logD(TAG, "HttpPost " + uri +  "\n" + contents.replaceAll(" ", ""));
 		}
 		byte[] bgzip = gzip(contents);
         httpRequest.setEntity(new ByteArrayEntity(bgzip));
@@ -198,7 +198,7 @@ public class GzipNetworkUtils {
 
 		contents.deleteCharAt(contents.length()-1);
 		if (DebugMode) {
-			DebugUtils.logD(TAG, "HttpPost " + uri +  ",contents=" + contents.toString());
+			DebugUtils.logD(TAG, "HttpPost " + uri +  "\n" + contents.toString().replaceAll(" ", ""));
 		}
 //		httpRequest.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8));
 		byte[] bgzip = gzip(contents.toString());

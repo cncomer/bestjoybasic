@@ -20,6 +20,7 @@ import org.apache.http.HttpHost;
 import org.apache.http.HttpRequest;
 import org.apache.http.HttpRequestInterceptor;
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpVersion;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpUriRequest;
@@ -38,9 +39,16 @@ import org.apache.http.params.HttpParams;
 import org.apache.http.params.HttpProtocolParams;
 import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.protocol.BasicHttpProcessor;
+import org.apache.http.protocol.HTTP;
 import org.apache.http.protocol.HttpContext;
 
 import java.io.IOException;
+import java.security.KeyManagementException;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.UnrecoverableKeyException;
+import java.security.cert.CertificateException;
 
 /**
  * <p>Subclass of the Apache {@link DefaultHttpClient} that is configured with
@@ -79,35 +87,59 @@ public final class AndroidHttpClient implements HttpClient {
    * @param userAgent to report in your HTTP requests.
    * @return AndroidHttpClient for you to use for all your requests.
    */
-  public static AndroidHttpClient newInstance(String userAgent) {
-    HttpParams params = new BasicHttpParams();
+  public static HttpClient newInstance(String userAgent) {
 
-    // Turn off stale checking.  Our connections break all the time anyway,
-    // and it's not worth it to pay the penalty of checking every time.
-    HttpConnectionParams.setStaleCheckingEnabled(params, false);
+    try {
+      KeyStore trustStore = KeyStore.getInstance(KeyStore.getDefaultType());
+      trustStore.load(null, null);
+      SSLSocketFactory sslSocketFactory = new SSLSocketFactoryEx(trustStore);
+      sslSocketFactory.setHostnameVerifier(SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
+      HttpParams params = new BasicHttpParams();
 
-    // Default connection and socket timeout of 20 seconds.  Tweak to taste.
-    HttpConnectionParams.setConnectionTimeout(params, 60 * 1000);
-    HttpConnectionParams.setSoTimeout(params, 60 * 1000);
-    HttpConnectionParams.setSocketBufferSize(params, 8192);
+      // Turn off stale checking.  Our connections break all the time anyway,
+      // and it's not worth it to pay the penalty of checking every time.
+      HttpConnectionParams.setStaleCheckingEnabled(params, false);
 
-    // Don't handle redirects -- return them to the caller.  Our code
-    // often wants to re-POST after a redirect, which we must do ourselves.
-    HttpClientParams.setRedirecting(params, true);
+      // Default connection and socket timeout of 20 seconds.  Tweak to taste.
+      HttpConnectionParams.setConnectionTimeout(params, 60 * 1000);
+      HttpConnectionParams.setSoTimeout(params, 60 * 1000);
+      HttpConnectionParams.setSocketBufferSize(params, 8192);
 
-    // Set the specified user agent and register standard protocols.
-    HttpProtocolParams.setUserAgent(params, userAgent);
-    SchemeRegistry schemeRegistry = new SchemeRegistry();
-    schemeRegistry.register(new Scheme("http",
-        PlainSocketFactory.getSocketFactory(), 80));
-    schemeRegistry.register(new Scheme("https",
-        SSLSocketFactory.getSocketFactory(), 443));
-    ClientConnectionManager manager =
-        new ThreadSafeClientConnManager(params, schemeRegistry);
+      // Don't handle redirects -- return them to the caller.  Our code
+      // often wants to re-POST after a redirect, which we must do ourselves.
+      HttpClientParams.setRedirecting(params, true);
 
-    // We use a factory method to modify superclass initialization
-    // parameters without the funny call-a-static-method dance.
-    return new AndroidHttpClient(manager, params);
+      // Set the specified user agent and register standard protocols.
+      HttpProtocolParams.setUserAgent(params, userAgent);
+      HttpProtocolParams.setVersion(params, HttpVersion.HTTP_1_1);
+      HttpProtocolParams.setContentCharset(params, HTTP.UTF_8);
+
+      SchemeRegistry schemeRegistry = new SchemeRegistry();
+      schemeRegistry.register(new Scheme("http",
+              PlainSocketFactory.getSocketFactory(), 80));
+      schemeRegistry.register(new Scheme("https",
+              sslSocketFactory, 443));
+      ClientConnectionManager manager =
+              new ThreadSafeClientConnManager(params, schemeRegistry);
+      // We use a factory method to modify superclass initialization
+      // parameters without the funny call-a-static-method dance.
+      return new AndroidHttpClient(manager, params);
+    } catch (KeyStoreException e) {
+      e.printStackTrace();
+    } catch (CertificateException e) {
+      e.printStackTrace();
+    } catch (NoSuchAlgorithmException e) {
+      e.printStackTrace();
+    } catch (IOException e) {
+      e.printStackTrace();
+    } catch (UnrecoverableKeyException e) {
+      e.printStackTrace();
+    } catch (KeyManagementException e) {
+      e.printStackTrace();
+    }
+
+    return new DefaultHttpClient();
+
   }
 
   public void setConnectionTimeout(int timeout) {
